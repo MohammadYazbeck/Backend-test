@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// Define Notification model
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  timestamp DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+
+// Define User model
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  passwordHash String
+  role         String        @default("user")
+  pushToken    String?
+  notifications Notification[]
+  createdAt    DateTime      @default(now())
+  requests     Request[]
+  devices      Device[]
+}
+
+// Define Device model
+model Device {
+  id           Int      @id @default(autoincrement())
+  deviceNumber String   @unique
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+// Define Request model
+model Request {
+  id                  Int      @id @default(autoincrement())
+  userId              Int
+  user                User     @relation(fields: [userId], references: [id])
+  username            String   
+  deviceNumber        String
+  credit              Float
+  calculatedCredit    Float
+  destinationOrg      String
+  noticeOfTransfer    String
+  noticeOfTransferPhoto String
+  status              String   @default("pending")
+  requestDate         DateTime @default(now())
+  notes               String?
+}
+
+
+// Define PaymentMethod model
+model PaymentMethod {
+  id          Int      @id @default(autoincrement())
+  method      String   @unique
+}
+
+// Define CreditOption model
+model CreditOption {
+  id          Int      @id @default(autoincrement())
+  option      String   @unique
+}

@@ -8,7 +8,7 @@ import {
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const prisma = new PrismaClient();
 
@@ -170,8 +170,6 @@ export const setRequestStatus = async (req, res) => {
 //  ----- > User < -----
 
 export const addRequest = async (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
   const {
     userId,
     deviceNumber,

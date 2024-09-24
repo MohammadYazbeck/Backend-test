@@ -2,16 +2,16 @@ import multer from "multer";
 import path from "path";
 import dotenv from "dotenv";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 // Set up storage with an environment variable for the upload directory
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = process.env.UPLOAD_DIR || "public/uploads/"; // Fallback to "uploads/" if UPLOAD_DIR is not set
-    cb(null, uploadDir); // Directory where files will be saved
+    const uploadDir = process.env.UPLOAD_DIR || "public/uploads/";
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Generate unique filename
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 

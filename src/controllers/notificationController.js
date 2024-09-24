@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Notifications
 export const getNotificaitons = async (req, res) => {
   const { id } = req.query;
 

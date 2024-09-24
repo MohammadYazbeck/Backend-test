@@ -1,4 +1,3 @@
-// firebaseAdmin.js
 import admin from "firebase-admin";
 
 // Decode the base64 string and parse JSON

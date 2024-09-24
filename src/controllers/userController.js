@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client"; // Import PrismaClient
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const prisma = new PrismaClient(); // Initialize PrismaClient
+const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
@@ -25,7 +25,6 @@ const generateTokens = (userId, role) => {
 export const login = async (req, res) => {
   const { username, password, pushToken } = req.body;
 
-  console.log(username, password, pushToken);
   if (!username || !password) {
     return res
       .status(400)

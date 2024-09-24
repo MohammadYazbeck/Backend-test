@@ -13,25 +13,21 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["*"],
+    origin: ["*", "http://localhost:5173/"],
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization",
   })
 );
 
-// This is how you emulate __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Define the uploads directory relative to the root of the project
 const uploadDir = process.env.UPLOAD_DIR || "public/uploads/";
-// Adjust the path to be relative to the location of app.js
-const uploadPath = path.join(__dirname, "..", uploadDir); // Navigate up from 'src' to root
 
-// Serve the uploads folder statically
+const uploadPath = path.join(__dirname, "..", uploadDir);
+
 app.use("/public/uploads/", express.static(uploadPath));
 
-// Other middlewares and routes
 app.use("/api", userRoutes, requestRoutes, notificationsRoutes);
 
 const PORT = process.env.PORT || 3000;

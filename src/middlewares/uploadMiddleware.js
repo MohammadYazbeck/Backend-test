@@ -7,7 +7,7 @@ dotenv.config(); // Load environment variables
 // Set up storage with an environment variable for the upload directory
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = process.env.UPLOAD_DIR || "/public/uploads/"; // Fallback to "uploads/" if UPLOAD_DIR is not set
+    const uploadDir = process.env.UPLOAD_DIR || "public/uploads/"; // Fallback to "uploads/" if UPLOAD_DIR is not set
     cb(null, uploadDir); // Directory where files will be saved
   },
   filename: function (req, file, cb) {

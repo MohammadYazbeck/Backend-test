@@ -11,10 +11,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+// Global CORS configuration
 app.use(
   cors({
     origin: ["http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -24,23 +26,23 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const uploadDir = process.env.UPLOAD_DIR || "public/uploads/";
-
 const uploadPath = path.join(__dirname, "..", uploadDir);
 
-app.use(
-  "/public/uploads/",
-  (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    next();
-  },
-  express.static(uploadPath)
-);
+// Apply CORS headers to all static file requests (like images)
+app.use("/public/uploads", express.static(uploadPath));
 
+// Specific CORS headers for static files (if needed)
+app.use("/public/uploads/", (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // Handle preflight requests
+  }
+  next();
+});
+
+// API Routes
 app.use("/api", userRoutes, requestRoutes, notificationsRoutes);
 
 const PORT = process.env.PORT || 3000;

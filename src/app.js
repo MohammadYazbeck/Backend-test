@@ -15,7 +15,10 @@ app.use(express.json());
 // Global CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-frontend-url.onrender.com"], // Add your Render frontend URL here
+    origin: [
+      "http://localhost:5173",
+      "https://frontend-test-wfj8.onrender.com",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })

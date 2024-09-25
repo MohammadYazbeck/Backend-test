@@ -29,12 +29,16 @@ const uploadPath = path.join(__dirname, "..", uploadDir);
 
 app.use(
   "/public/uploads/",
-  express.static(uploadPath, {
-    setHeaders: function (res, path, stat) {
-      res.set("Access-Control-Allow-Origin", "http://localhost:5173");
-      res.set("Access-Control-Allow-Headers", "Content-Type,Authorization");
-    },
-  })
+  (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    next();
+  },
+  express.static(uploadPath)
 );
 
 app.use("/api", userRoutes, requestRoutes, notificationsRoutes);

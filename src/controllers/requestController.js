@@ -328,7 +328,7 @@ export const deleteAllRequests = async (req, res) => {
     await prisma.request.deleteMany();
 
     // 2. Delete all files in the 'uploads' folder
-    const uploadsDir = path.join("uploads");
+    const uploadsDir = path.join("public/uploads");
 
     try {
       const files = await fs.promises.readdir(uploadsDir);

@@ -26,7 +26,14 @@ const uploadDir = process.env.UPLOAD_DIR || "public/uploads/";
 
 const uploadPath = path.join(__dirname, "..", uploadDir);
 
-app.use("/public/uploads/", express.static(uploadPath));
+app.use(
+  "/public/uploads/",
+  express.static(uploadPath, {
+    setHeaders: function (res, path, stat) {
+      res.set("Access-Control-Allow-Origin", "*", "http://localhost:5173");
+    },
+  })
+);
 
 app.use("/api", userRoutes, requestRoutes, notificationsRoutes);
 

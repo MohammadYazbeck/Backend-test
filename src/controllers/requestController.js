@@ -184,8 +184,7 @@ export const addRequest = async (req, res) => {
   }
 
   // Ensure we are constructing the URL with the correct protocol
-  const protocol = req.protocol === "https" ? "https" : "http";
-  const baseUrl = `${protocol}://${req.get("host")}`;
+  const baseUrl = `https://${req.get("host")}`;
 
   const noticeOfTransferPhoto = `${baseUrl}/${req.file.path.replace(
     /\\/g,

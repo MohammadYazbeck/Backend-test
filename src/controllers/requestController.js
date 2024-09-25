@@ -178,13 +178,15 @@ export const addRequest = async (req, res) => {
     destinationOrg,
     noticeOfTransfer,
   } = req.body;
+
   if (!req.file) {
     return res.status(400).json({ message: "Photo is required." });
   }
 
-  // Construct the URL or path to the uploaded file
+  // Ensure we are constructing the URL with the correct protocol
+  const protocol = req.protocol === "https" ? "https" : "http";
+  const baseUrl = `${protocol}://${req.get("host")}`;
 
-  const baseUrl = `${req.protocol}://${req.get("host")}`;
   const noticeOfTransferPhoto = `${baseUrl}/${req.file.path.replace(
     /\\/g,
     "/"
@@ -196,13 +198,12 @@ export const addRequest = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(400).json({ message: "incorrect userId" });
+    return res.status(400).json({ message: "Incorrect userId" });
   }
 
   try {
     const newRequest = await prisma.$transaction(async (prisma) => {
       // Create a new request
-
       const createdRequest = await prisma.request.create({
         data: {
           userId: parseInt(userId),
@@ -217,8 +218,7 @@ export const addRequest = async (req, res) => {
         },
       });
 
-      // Add a notificiton to admin (after checking if he has less than 5 notificaitons if no delete old ones!)
-
+      // Notification logic as before...
       const notifications = await prisma.notification.findMany({
         where: { userId: 0 },
         orderBy: { timestamp: "asc" },

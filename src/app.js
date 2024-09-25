@@ -15,9 +15,8 @@ app.use(express.json());
 // Global CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://your-frontend-url.onrender.com"], // Add your Render frontend URL here
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
@@ -25,22 +24,10 @@ app.use(
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Setup for serving static files
 const uploadDir = process.env.UPLOAD_DIR || "public/uploads/";
 const uploadPath = path.join(__dirname, "..", uploadDir);
-
-// Apply CORS headers to all static file requests (like images)
 app.use("/public/uploads", express.static(uploadPath));
-
-// Specific CORS headers for static files (if needed)
-app.use("/public/uploads/", (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200); // Handle preflight requests
-  }
-  next();
-});
 
 // API Routes
 app.use("/api", userRoutes, requestRoutes, notificationsRoutes);

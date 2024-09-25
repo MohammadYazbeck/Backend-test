@@ -37,13 +37,7 @@ app.use(
   "/public/uploads/",
   express.static(uploadPath, {
     setHeaders: function (res, path, stat) {
-      const origin = res.req.headers.origin;
-      // Allow specific localhost origin and all other origins
-      if (origin === "http://localhost:5173" || !origin) {
-        res.set("Access-Control-Allow-Origin", "http://localhost:5173");
-      } else {
-        res.set("Access-Control-Allow-Origin", origin || "*"); // Set specific origin or wildcard
-      }
+      res.set("Access-Control-Allow-Origin", "http://localhost:5173");
       res.set("Access-Control-Allow-Headers", "Content-Type,Authorization");
     },
   })
